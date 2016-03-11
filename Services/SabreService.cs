@@ -58,7 +58,7 @@ namespace BergHansenHackathon.Services
                     var rawResult = obj["grouped"][string.Format("category:{0}", category)]["doclist"]["docs"]
                     .Select(item => new Geo
                     {
-                        name = item["name"]
+                        //name = item["name"]
                     }).ToList();
                     
                     result.Geos = rawResult;
