@@ -12,14 +12,22 @@ namespace BergHansenHackathon.Controllers
     public class HomeController : Controller
     {
         private readonly ISabreService _sabreService;
+        private readonly ApplicationDbContext _dbcontext;
         
-        public HomeController(ISabreService sabreService)
+        public HomeController(ISabreService sabreService, ApplicationDbContext context)
         {
+            _dbcontext = context;
             _sabreService = sabreService;
         }
         
         public IActionResult Index()
         {
+            using (var context = new ApplicationDbContext())
+            {
+                var meeting = new MeetingRoom();
+                meeting.City = "Test City";
+                context.MeetingRooms.Add(meeting);
+            }
             return View();
         }
 

@@ -11,7 +11,7 @@ namespace BergHansenHackathon.Models
         public int Id { get; set; }
         public string Addresse { get; set; }
         public string City { get; set; }
-        public List<Availability> Availability { get; set; }
+        //public List<Availability> Availability { get; set; }
         public int NumberOfPeople { get; set; }
         public bool HasProjector { get; set; }
         public bool HasInternet { get; set; }

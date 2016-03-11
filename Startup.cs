@@ -35,7 +35,7 @@ namespace BergHansenHackathon
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
             Configuration["Data:DefaultConnection:ConnectionString"] = $@"Data Source={appEnv.ApplicationBasePath}/BergHansenHackathon.db";
-
+            //Configuration["Data:DefaultConnection:ConnectionString"] = $@"Server=tcp:berghansenhack.database.windows.net,1433;Database=berghansenhack;User ID=teilin@berghansenhack;Password=oipt737OI!;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -47,6 +47,9 @@ namespace BergHansenHackathon
             
             // Add framework services.
             services.AddEntityFramework()
+                // .AddSqlServer()
+                // .AddDbContext<ApplicationDbContext>(options =>
+                //     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
                 .AddSqlite()
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));

@@ -8,8 +8,8 @@ using BergHansenHackathon.Models;
 namespace BergHansenHackathon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160311193610_MeetingRoom")]
-    partial class MeetingRoom
+    [Migration("20160311220004_Meetingroom")]
+    partial class Meetingroom
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,8 +74,6 @@ namespace BergHansenHackathon.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Available");
-
-                    b.Property<int?>("MeetingRoomId");
 
                     b.HasKey("Id");
                 });
@@ -182,13 +180,6 @@ namespace BergHansenHackathon.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("BergHansenHackathon.Models.Availability", b =>
-                {
-                    b.HasOne("BergHansenHackathon.Models.MeetingRoom")
-                        .WithMany()
-                        .HasForeignKey("MeetingRoomId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
