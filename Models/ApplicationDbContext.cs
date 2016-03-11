@@ -17,6 +17,7 @@ namespace BergHansenHackathon.Models
             // Add your customizations after calling base.OnModelCreating(builder);
         }
         
-        public DbSet<Trip> Trips {get; set; }
+        public DbSet<MeetingRoom> MeetingRooms {get; set; }
+        public DbSet<Availability> Availabilities { get; set; }
     }
 }

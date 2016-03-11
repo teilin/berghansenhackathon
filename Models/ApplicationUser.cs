@@ -9,6 +9,7 @@ namespace BergHansenHackathon.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        
+        public string Fornavn { get; set; }
+        public string Etternavn { get; set; }
     }
 }
