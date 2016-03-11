@@ -49,6 +49,12 @@ namespace BergHansenHackathon.Services
                     string.Format("/v1/lists/utilities/geoservices/autocomplete?query={0}&category={1}&limit={2}",
                         query, category, limit));
                         
+                if(response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    //Vurdere hva jeg skal gjøre i de tilfellene token har utløpt
+                    //return await GetGeoAutoComplete(query, category, limit);
+                }
+                        
                 var result = new GeoList();
                         
                 if(response.IsSuccessStatusCode)
@@ -58,7 +64,7 @@ namespace BergHansenHackathon.Services
                     var rawResult = obj["grouped"][string.Format("category:{0}", category)]["doclist"]["docs"]
                     .Select(item => new Geo
                     {
-                        name = item["name"]
+                        name = (string)item["name"]
                     }).ToList();
                     
                     result.Geos = rawResult;
@@ -73,16 +79,17 @@ namespace BergHansenHackathon.Services
             var apisecret = Environment.GetEnvironmentVariable("SABREAPISECRET");
             var credentials = Base64Encode(string.Format("{0}:{1}", _appSettings.SabreClientID, apisecret));
             
-            using(var client = new HttpClient())
+            var result = _cache.Get<AccressToken>(CacheKey);
+            
+            if(result == null)
             {
-                client.BaseAddress = new Uri(_appSettings.SabreEnviroment);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-                
-                var result = _cache.Get<AccressToken>(CacheKey);
-                
-                if(result == null)
+            
+                using(var client = new HttpClient())
                 {
+                    client.BaseAddress = new Uri(_appSettings.SabreEnviroment);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+                
                     var payloadData = new List<KeyValuePair<string, string>>();
                     payloadData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
                     
@@ -101,9 +108,8 @@ namespace BergHansenHackathon.Services
                         });
                     }
                 }
-                
-                return result;
             }
+            return result;
         }
         
         private static string Base64Encode(string encode)
